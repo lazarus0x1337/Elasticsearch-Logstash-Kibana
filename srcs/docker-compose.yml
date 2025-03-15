@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  elasticsearch:
+    image: "elasticsearch:app"
+    container_name: elasticsearch
+    build: ./elasticsearch/
+    # restart: always
+    volumes:
+      - certs:/usr/share/elasticsearch/config/certs
+      - es_data:/usr/share/elasticsearch/data/
+    environment:
+      - ES_JAVA_OPTS=-Xmx256m -Xms256m
+      - discovery.type=single-node
+    ports:
+      - '9200:9200'
+    networks:
+      - elk-network
+  
+  logstash:
+    image: "logstash:app"
+    container_name: logstash
+    build: ./logstash/
+    restart: always
+    volumes:
+      - certs:/usr/share/logstash/certs
+      # - logstash_config:/usr/share/logstash/config
+      # - logstash_pipeline:/usr/share/logstash/pipeline
+      # - logstash_data:/usr/share/logstash/data
+      # - ./logs/game:/var/log/game 
+    depends_on:
+      - elasticsearch
+    ports:   
+      - '5044:5044'
+    environment:
+      - LS_JAVA_OPTS=-Xmx256m -Xms256m
+    networks:
+      - elk-network
+
+  # kibana:
+  #   image: kibana:8.17.3
+  #   container_name: kibana
+  #   restart: always
+  #   ports:
+  #     - '5666:5601'
+  #   environment:
+  #     - ELASTICSEARCH_URL=http://elasticsearch:9200
+  #     - KIBANA_PASSWORD=changeme2
+  #   depends_on:
+  #     - elasticsearch
+  #   networks:
+  #     - elk-network
+  #   volumes:
+  #     - kibana_config:/usr/share/kibana/config
+  #     - kibana_data:/usr/share/kibana/data
+
+networks:
+  elk-network:
+    driver: bridge
+
+volumes:
+  es_data:
+  certs:
+  # logstash_config:
+  # logstash_pipeline:
+  # logstash_data:
+  # kibana_config:
+  # kibana_data:

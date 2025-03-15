@@ -1,0 +1,7 @@
+FROM logstash:8.17.3
+
+COPY ./logstash.conf /usr/share/logstash/pipeline/logstash.conf
+
+WORKDIR /usr/share/logstash
+
+ENTRYPOINT ["logstash", "-f", "/usr/share/logstash/pipeline/logstash.conf"]

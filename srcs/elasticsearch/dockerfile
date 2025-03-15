@@ -1,0 +1,18 @@
+FROM elasticsearch:8.17.3
+
+USER root
+
+RUN apt-get update && apt-get install -y gosu
+
+# Set the working directory
+WORKDIR /usr/share/elasticsearch
+
+# Copy the certificate generation script
+COPY certs_setup.sh /usr/share/elasticsearch/certs_setup.sh
+COPY elasticsearch.yml /usr/share/elasticsearch/config/elasticsearch.yml
+
+# Ensure the script has execution permissions
+RUN chmod +x /usr/share/elasticsearch/certs_setup.sh
+
+# Run Elasticsearch normally, but execute certs_setup.sh before starting
+ENTRYPOINT ["/usr/share/elasticsearch/certs_setup.sh"]
