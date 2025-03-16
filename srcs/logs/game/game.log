@@ -1,0 +1,11 @@
+{
+  "level": 30,
+  "time": 1677623456789,
+  "pid": 1234,
+  "hostname": "server-1",
+  "reqId": "c1439b6a-1d58-4a4a-bacb-c5d507a58ef9",
+  "msg": "incoming request",
+  "method": "GET",
+  "url": "/api/users",
+  "responseTime": 45
+}

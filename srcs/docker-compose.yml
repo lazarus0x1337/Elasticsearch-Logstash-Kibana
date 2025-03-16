@@ -27,7 +27,7 @@ services:
       # - logstash_config:/usr/share/logstash/config
       # - logstash_pipeline:/usr/share/logstash/pipeline
       # - logstash_data:/usr/share/logstash/data
-      # - ./logs/game:/var/log/game 
+      - ./logs/game:/var/log/game 
     depends_on:
       - elasticsearch
     ports:   
